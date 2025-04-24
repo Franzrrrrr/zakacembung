@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Goal extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['target_books', 'deadline'];
-
-    // Relasi banyak ke banyak dengan Buku
     public function books()
     {
         return $this->belongsToMany(Book::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

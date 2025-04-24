@@ -16,14 +16,16 @@
         <div>
             <h3 class="bg-[#865015] text-white p-2 rounded-md">Kategori</h3>
             <ul class="space-y-2 pl-2 pt-2">
+                <form action="{{route('tampilan.all')}}" method="GET" class="flex items-center">
+                    <div class="flex-col">
                 
-                <li><input type="text" name="" id="" class="form-control placeholder:p-2 rounded-md p-1 border-1 border-black focus:p-1 focus:border-1 focus:border-blue-300" placeholder="cari..."></li>
-                <select name="genre_id" id="genre-id">
+                <select name="genre_id" id="genre-id" class="rounded-md mt-2">
                         <option value="" class="justify-center">Pilih kategori</option>
                     @foreach ($genres as $genre)
                         <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                         @endforeach
                     </select>
+                </div>
                 
             </ul>
         </div>
@@ -43,6 +45,8 @@
 <div class="flex flex-row justify-between mt-2ii">
 <p class="text-gray-400">{{ $item->genre->name }}</p>
 </div></a>
+<p class="text-gray-500">    {{ Str::of($item->status)->replace('_', ' ')->title() }}
+</p>
 </div>
 @endforeach
         </div>

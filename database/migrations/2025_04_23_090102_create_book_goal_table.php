@@ -9,22 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::create('book_goal', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('goal_id')->constrained()->onDelete('cascade');
-        $table->foreignId('book_id')->constrained()->onDelete('cascade');
-        $table->timestamps();
-    });
-}
-
+    public function up(): void
+    {
+        Schema::create('goal_book', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('goal_id')->constrained('goals')->onDelete('cascade'); // Relasi ke tabel goals
+            $table->foreignId('book_id')->constrained('books')->onDelete('cascade'); // Relasi ke tabel books
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('book_goal');
+        Schema::dropIfExists('goal_book');
     }
 };

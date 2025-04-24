@@ -19,7 +19,7 @@ class BookFactory extends Factory
             'genre_id' => Genre::inRandomOrder()->first()->id,
             'total_pages' => rand(100, 1000),
             'deskripsi' => $this->faker->unique()->paragraphs(2,\true),
-            'status' => $this->faker->randomElement(['belum_dibaca', 'sedang_dibaca', 'selesai_dibaca']),
+            'status' => 'belum_dibaca'
         ];
     }
 }

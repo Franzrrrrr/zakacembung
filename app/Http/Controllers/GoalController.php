@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use App\Models\Book;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class GoalController extends Controller
@@ -12,30 +13,30 @@ class GoalController extends Controller
     public function showModal()
     {
         $books = Book::all();  // Mengambil semua buku dari database
-        return view('your-view', compact('books')); // Ganti 'your-view' dengan view yang sesuai
+        return view('book.index', compact('books')); // Ganti 'your-view' dengan view yang sesuai
     }
 
     // Menyimpan goal baru
-    public function store(Request $request)
-    {
-        // Validasi data dari form
-        $validated = $request->validate([
-            'target_books' => 'required|integer|min:1',
-            'deadline' => 'required|date|after_or_equal:today', // Validasi tanggal agar tidak di masa depan
-            'books' => 'required|array|min:1', // Pastikan ada buku yang dipilih
-            'books.*' => 'exists:books,id' // Validasi bahwa ID buku yang dipilih ada dalam database
-        ]);
+    // GoalController.php
 
-        // Menyimpan goal ke dalam tabel goal
-        $goal = Goal::create([
-            'target_books' => $validated['target_books'],
-            'deadline' => $validated['deadline'],
-        ]);
 
-        // Mengaitkan buku dengan goal (banyak ke banyak)
-        $goal->books()->sync($validated['books']);  // Menggunakan relasi banyak ke banyak
 
-        // Mengarahkan kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Goal berhasil ditambahkan!');
-    }
+public function store(Request $request)
+{
+    $request->validate([
+        'target_books' => 'required|integer|min:1',
+        'deadline' => 'required|date',
+    ]);
+
+    $goal = new Goal();
+    $goal->user_id = Auth::id(); // <–– WAJIB ISI INI!
+    $goal->target_books = $request->target_books;
+    $goal->deadline = $request->deadline;
+    $goal->save();
+
+    return redirect()->route('book.index')->with('success', 'Goal berhasil diset!');
+}
+
+
+
 }

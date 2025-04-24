@@ -10,15 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('goals', function (Blueprint $table) {
-            $table->id();
-            $table->integer('target_books');
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');  // Relasi ke Book
-            $table->date('dateline');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('goals', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->integer('target_books');
+    $table->date('deadline');
+    $table->timestamps();
+});
+}
+
 
     /**
      * Reverse the migrations.
