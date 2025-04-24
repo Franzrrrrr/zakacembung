@@ -1,13 +1,30 @@
 <?php
+namespace App\Http\Controllers;
 
-    namespace App\Http\Controllers;
+use App\Http\Requests\UpdateBookRequest;
 
+    
+    
+    use App\Http\Requests\StoreBookRequest;
     use App\Models\Book;
     use App\Models\Genre;
     use Illuminate\Http\Request;
 
     class BookController extends Controller
     {
+        public function complete($bookId)
+{
+    // Cari buku berdasarkan ID
+    $book = Book::findOrFail($bookId);
+
+    // Tandai buku sebagai selesai
+    $book->last_read_page = $book->total_pages;  // Set last_read_page ke total halaman
+    $book->save();  // Simpan perubahan
+
+    // Kembalikan ke halaman daftar buku dengan notifikasi sukses
+    return redirect()->route('book.index')->with('success', 'Buku telah selesai dibaca!');
+}
+
 
         public function search(Request $request)
 {
@@ -118,6 +135,27 @@ $books = $query->get(); // hanya dipanggil sekali
     return "M 10 50 A $radius $radius 0 $largeArcFlag 1 $x $y";
 }
 
+        public function updateProgress(Request $request, $bookId)
+{
+    \Log::info('Updating progress for book ' . $bookId);
+
+    // Cek apakah ada error pada request
+    \Log::info('Request Data: ' . json_encode($request->all()));
+
+    $book = Book::findOrFail($bookId);
+
+    // Validasi
+    $validated = $request->validate([
+        'last_read_page' => 'required|numeric|min:0|max:' . $book->total_pages,
+    ]);
+
+    $book->last_read_page = $validated['last_read_page'];
+    $book->save();
+
+    return redirect()->route('book.index')->with('success', 'Progress updated successfully');
+}
+
+
 
         public function create()
         {
@@ -125,26 +163,20 @@ $books = $query->get(); // hanya dipanggil sekali
             return view('book.create', compact('genres'));
         }
 
-        public function store(Request $request)
-        {
-            $validated = $request->validate([
-                'judul' => 'required|string|max:255',
-                'penulis' => 'required|string|max:255',
-                'cover_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'genre_id' => 'required|exists:genres,id',
-                'deskripsi' => 'required|string',
-                'status' => 'required|in:belum_dibaca,sedang_dibaca,selesai_dibaca'
-            ]);
+        public function store(StoreBookRequest $request)
+{
+    $validated = $request->validated();
 
-            if ($request->hasFile('cover_path')) {
-                $path = $request->file('cover_path')->store('covers', 'public');
-                $validated['cover_path'] = $path;
-            }
+    if ($request->hasFile('cover_path')) {
+        $path = $request->file('cover_path')->store('covers', 'public');
+        $validated['cover_path'] = $path;
+    }
 
-            Book::create($validated);
+    Book::create($validated);
 
-            return redirect()->route('book.index')->with('success', 'Buku berhasil ditambahkan!');
-        }
+    return redirect()->route('book.index')->with('success', 'Buku berhasil ditambahkan!');
+}
+
 
         public function show(Book $book,$id)
         {
@@ -159,7 +191,9 @@ $books = $query->get(); // hanya dipanggil sekali
             return view('book.edit', compact('book', 'genres'));
         }
 
-        public function update(Request $request, Book $book)
+
+public function update(UpdateBookRequest $request, Book $book)
+
         {
             $validated = $request->validate([
                 'judul' => 'required|string|max:255',
@@ -168,7 +202,6 @@ $books = $query->get(); // hanya dipanggil sekali
                 'deskripsi' => 'required|string|max:255',
                 'genre_id' => 'required|exists:genres,id',
                 'deskripsi' => 'required:max:255', 
-                'tahun' => 'required|integer|min:1900|max:' . date('Y'),
                 'status' => 'required|in:belum_dibaca,sedang_dibaca,selesai_dibaca'
             ]);
 

@@ -43,8 +43,8 @@
         </div>
 
         <div class="mb-4">
-          <label for="tahun" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
-          <input type="number" name="tahun" id="tahun" value="{{ old('tahun', $book->tahun) }}"
+          
+          
             class="w-full border border-gray-300 rounded px-3 py-2" min="1900" max="{{ date('Y') }}" required>
         </div>
 

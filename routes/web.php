@@ -30,4 +30,9 @@ Route::put('/tampil/{book}/', [BookController::class, 'update'])->name('book.upd
 Route::delete('/tampil/{book}', [BookController::class, 'destroy'])->name('book.destroy');
 Route::get('/allbook', [BookController::class, 'search' , 'showBook'])->name('tampilan.all');
 Route::post('/goal/store', [GoalController::class, 'store'])->name('goal.store');
+Route::patch('tampil/{book}/progress', [BookController::class, 'updateProgress'])->name('books.updateProgress');
+// Route untuk menyelesaikan buku
+Route::patch('/books/{book}/complete', [BookController::class, 'complete'])->name('book.complete');
+
+
 

@@ -20,24 +20,66 @@
             <div class="col-span-3 p-4 overflow-x-auto">
                 <div class="flex space-x-6 h-full items-center"> <!-- Container flex horizontal -->
                     @foreach ($books as $item)
-                    <div class="flex-shrink-0 w-40 text-center"> <!-- Block buku -->
-                        <!-- Cover -->
-                        <div class="h-48 bg-gray-100 mb-2 flex items-center justify-center overflow-hidden">
-                            @if($item->cover_path)
-                                <img src="{{ asset('storage/' . $item->cover_path)}}" alt="{{ $item->judul }}" class="h-full object-cover">
-                            @else
-                                <span class="text-gray-500">No Cover</span>
-                            @endif
-                        </div>
-                        
-                        <!-- Informasi buku -->
-                        <div>
-                            <h3 class="font-bold text-sm truncate">{{ $item->judul }}</h3>
-                            <p class="text-xs text-gray-600">{{ $item->penulis }}</p>
-                            <p class="text-xs text-gray-500">{{ $item->tahun }}</p>
-                        </div>
-                    </div>
-                    @endforeach
+    <div class="flex-shrink-0 w-40 text-center"> <!-- Block buku -->
+        <!-- Cover -->
+        <div class="h-48 bg-gray-100 mb-2 flex items-center justify-center overflow-hidden">
+            @if($item->cover_path)
+                <a href="{{ route('book.show', $item->id) }}">
+                    <img src="{{ asset('storage/' . $item->cover_path) }}" alt="{{ $item->judul }}" class="h-full object-cover">
+                </a>
+            @else
+                <span class="text-gray-500">No Cover</span>
+            @endif
+        </div>
+
+        <!-- Informasi buku -->
+        <div>
+            <h3 class="font-bold text-sm truncate">{{ $item->judul }}</h3>
+            <p class="text-xs text-gray-600">{{ $item->penulis }}</p>
+        </div>
+
+        <!-- Progress bar -->
+        @if($item->total_pages > 0)
+    @php
+        $progress = ($item->last_read_page / $item->total_pages) * 100;
+    @endphp
+    <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+        <div class="bg-yellow-700 h-1 rounded-full" style="width: {{ $progress }}%"></div>
+    </div>
+    <p class="text-[10px] text-gray-500 mt-1">{{ round($progress) }}% ({{ $item->last_read_page }}/{{ $item->total_pages }})</p>
+@endif
+
+        <!-- Form update progress -->
+        <form action="{{ route('books.updateProgress', $item->id) }}" method="POST" class="mt-1">
+            @csrf
+            @method('PATCH')
+            <input type="number" name="last_read_page" value="{{ $item->last_read_page }}"
+                   min="0" max="{{ $item->total_pages }}"
+                   class="w-full text-xs border border-gray-300 rounded px-1 py-0.5">
+            <button type="submit"
+                    class="w-full bg-yellow-700 hover:bg-yellow-800 text-white text-[10px] py-0.5 mt-1 rounded">
+                Update
+            </button>
+            
+        </form>
+        <form action="{{ route('book.complete', $item->id) }}" method="POST" class="mt-1">
+            @csrf
+            @method('PATCH')
+            <button type="submit"
+                    class="w-full bg-green-700 hover:bg-green-800 text-white text-[10px] py-0.5 mt-1 rounded">
+                Mark as Completed
+            </button>
+            @if ($item->last_read_page == $item->total_pages)
+    <p class="text-sm text-green-600">Buku selesai dibaca!</p>
+@else
+    <p class="text-sm text-yellow-600">Masih dalam progress...</p>
+@endif
+
+        </form>
+        
+    </div>
+@endforeach
+
                 </div>
             </div>
         </div>    

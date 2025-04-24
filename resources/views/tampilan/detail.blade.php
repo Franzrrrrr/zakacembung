@@ -23,14 +23,14 @@
         </div>
         <div class="flex items-end">
             <p class="text-[14px]">share</p>
-        </div>
+        </div> 
         </div>
         </div>
 
         {{-- cover --}}
 
         <div class="bg-sky-500 h-auto mt-[5%] w-full rounded-md flex items-center justify-center">
-            <img src="{{}}" alt="">
+            <img src="{{'storage/' . $book->cover_path, $book->id}}" alt="{{$book->judul}}">
         </div>
         {{-- <p>{{ $book->penulis }}</p>
         <img src="{{$book->cover_path, $book->id}}" alt="">

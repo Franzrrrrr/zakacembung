@@ -21,6 +21,8 @@
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
             $table->text('deskripsi');
             $table->enum('status', ['belum_dibaca', 'sedang_dibaca', 'selesai_dibaca'])->default('belum_dibaca');
+            $table->integer('total_pages')->default(100);
+            $table->integer('last_read_page')->default(10);
             $table->timestamps();
         });
     }
