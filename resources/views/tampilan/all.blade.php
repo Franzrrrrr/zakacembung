@@ -15,6 +15,6 @@
             </div>
 
             <!-- Sidebar + Main Content -->
-            <x-rebuku.sideb  :genres="$genres" :books="$books" />
+            <x-rebuku.sideb  :genres="$genres" :books="$books" :penulis="$penulis" />
         </body>
         </html>

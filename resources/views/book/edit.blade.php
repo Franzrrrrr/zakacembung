@@ -32,8 +32,8 @@
         </div>
 
         <div class="mb-4">
-          <label for="penulis" class="block text-sm font-medium text-gray-700">Penulis</label>
-          <input type="text" name="penulis" id="penulis" value="{{ old('penulis', $book->penulis) }}"
+          <label for="penulis_id" class="block text-sm font-medium text-gray-700">Penulis</label>
+          <input type="text" name="penulis_id" id="penulis_id" value="{{ old('penulis_id', $book->penulis->name) }}"
             class="w-full border border-gray-300 rounded px-3 py-2" required>
         </div>
 

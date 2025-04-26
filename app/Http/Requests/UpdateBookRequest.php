@@ -15,7 +15,7 @@ class UpdateBookRequest extends FormRequest
     {
         return [
             'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
+            'penulis_id' => 'required|string|max:255',
             'cover_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsi' => 'required|string|max:255',
             'genre_id' => 'required|exists:genres,id',

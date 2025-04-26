@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Penulis;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BookFactory extends Factory
@@ -14,7 +15,7 @@ class BookFactory extends Factory
     {
         return [
             'judul' => ucfirst($this->faker->unique()->words(3, true)), 
-            'penulis' => $this->faker->unique()->name,
+            'penulis_id' => Penulis::inRandomOrder()->first(),
             'cover_path' => $this->faker->unique()->imageUrl(640, 480, 'books', true),
             'genre_id' => Genre::inRandomOrder()->first()->id,
             'total_pages' => rand(100, 1000),

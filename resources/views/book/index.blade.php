@@ -35,7 +35,7 @@
             <!-- Informasi buku -->
             <div>
                 <h3 class="font-bold text-sm truncate">{{ $item->judul }}</h3>
-                <p class="text-xs text-gray-600">{{ $item->penulis }}</p>
+                <p class="text-xs text-gray-600">{{ $item->penulis->name }}</p>
             </div>
 
             <!-- Progress bar -->

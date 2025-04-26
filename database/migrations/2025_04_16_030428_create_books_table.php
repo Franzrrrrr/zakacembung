@@ -15,7 +15,8 @@
         Schema::create('books', function (Blueprint $table) {
     $table->id();
     $table->string('judul')->unique();
-    $table->string('penulis');
+    $table->unsignedBigInteger('penulis_id');
+    $table->foreign('penulis_id')->references('id')->on('penulis')->onDelete('cascade');
     $table->string('cover_path')->nullable();
     $table->foreignId('genre_id')->constrained()->onDelete('cascade');
     $table->text('deskripsi');

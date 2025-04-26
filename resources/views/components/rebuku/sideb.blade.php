@@ -12,8 +12,15 @@
             <x-home.radio />
         </div>
 
+        <script type="text/javascript">
+            function autoSubmit(){
+                document.getElementById("myForm").submit();
+            };
+        </script>
+        
+
         <!-- Section: Kategori -->
-        <div>
+        <div class="mt-2">
             <h3 class="bg-[#865015] text-white p-2 rounded-md">Kategori</h3>
             <ul class="space-y-2 pl-2 pt-2">
                 <form action="{{route('tampilan.all')}}" method="GET" class="flex items-center">
@@ -25,6 +32,14 @@
                         <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                         @endforeach
                     </select>
+                    
+                    {{-- Section: Searching  --}}
+        <div class="w-full bg-slate-200 mt-2">
+            <form action="{{route('tampilan.all')}}" method="GET"  id="myForm">
+            <input type="text" name="penulis" id="penulis" placeholder="Cari Penulis Buku" value="{{request('penulis')}}" class="border p-2 rounded border-[#a57b44] border-1 placeholder:text-gray-600 placeholder:p-2 w-[100%]">
+            </form>
+        </div>
+
                 </div>
                 
             </ul>
@@ -41,7 +56,7 @@
 <a href="{{route('book.show', $item->id)}}">
     <img src="{{ asset('storage/' . $item->cover_path)}}" alt="{{ $item->judul }}">
     <h1 class="font-outfit text-black font-semibold text-base">{{ $item->judul }}</h1>
-<p class="mt-2">{{ $item->penulis }}</p>
+<p class="mt-2">{{ $item->penulis->name }}</p>
 <div class="flex flex-row justify-between mt-2ii">
 <p class="text-gray-400">{{ $item->genre->name }}</p>
 </div></a>

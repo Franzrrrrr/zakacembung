@@ -26,8 +26,8 @@
   
     <!-- Kanan -->
     <div class="relative flex justify-center space-x-6">
-      <img src="/assets/book1.png" class="transform rotate-6 h-64 shadow-md">
-      <img src="/assets/book2.png" class="transform -rotate-3 h-64 shadow-md">
+      <img src="/assets/Frame44885.png" class="transform rotate-6 h-64 shadow-md">
+      <img src="/assets/Frame44886.png" class="transform -rotate-3 h-64 shadow-md">
     </div>
   </section>
   

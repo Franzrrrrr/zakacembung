@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Book;
+use App\Models\Penulis;
 
 class BookSeeder extends Seeder
 {
@@ -11,6 +12,7 @@ class BookSeeder extends Seeder
     {
         $this->call([
             GenreSeeder::class,
+            PenulisSeeder::class,
         ]);
 
         Book::factory(20)->create();

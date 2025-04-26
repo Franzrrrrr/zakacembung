@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use Illuminate\Http\Request;
-use App\Models\{Book, Genre};
+use App\Models\{Book, Genre, Penulis};
 use App\Http\Requests\{StoreBookRequest, UpdateBookRequest};
 
 class BookController extends Controller
@@ -12,7 +12,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $goals = Goal::with('books')->get();
-        $query = Book::query()->with('genre');
+        $query = Book::query()->with('genre', 'penulis');
 
         if ($request->filled('text') && $request->search != '') {
             $query->where('judul', 'like', '%' . $request->search . '%')
@@ -41,8 +41,10 @@ class BookController extends Controller
             }
         }
 
-        $books = $query->get();
-        $genres = Genre::all();
+            $books = $query->get(); 
+            // Use the query to fetch the filtered books
+  // Mengambil penulis terkait dengan buku
+
 
         $totalTarget = 12;
         $completedBooks = Book::where('status', 'selesai_dibaca')->count();
@@ -53,7 +55,6 @@ class BookController extends Controller
 
         return view('book.index', [
             'books' => $books,
-            'genres' => $genres,
             'completedBooks' => $completedBooks,
             'behindSchedule' => $behindSchedule,
             'progress' => round($progress, 2),
@@ -116,7 +117,7 @@ class BookController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $query = Book::query();
+        $query = Book::query()->with('penulis', 'genre');
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -124,6 +125,15 @@ class BookController extends Controller
                   ->orWhere('penulis', 'like', '%' . $request->search . '%');
             });
         }
+            if ($request->filled('penulis')) {
+                    $query->whereHas('penulis', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->penulis . '%');
+                });
+        }
+        
+
+
+
 
         if ($request->filled('posted')) {
             switch ($request->posted) {
@@ -144,14 +154,16 @@ class BookController extends Controller
 
         $books = $query->get();
         $genres = Genre::all();
+        $penulis = Penulis::all();
 
-        return view('tampilan.all', compact('books', 'genres', 'search'));
+        return view('tampilan.all', compact('books', 'genres', 'search', 'penulis'));
     }
 
     public function create()
     {
         $genres = Genre::all();
-        return view('book.create', compact('genres'));
+        $penulis = Penulis::all();
+        return view('book.create', compact('genres', 'penulis'));
     }
 
     public function store(StoreBookRequest $request)
@@ -163,6 +175,8 @@ class BookController extends Controller
             $validated['cover_path'] = $path;
         }
 
+        $penulis = Penulis::firstOrCreate(['name' => $request->penulis_name]);
+        $validated['penulis_id'] = $penulis->id;
         Book::create($validated);
 
         return redirect()->route('book.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -171,20 +185,25 @@ class BookController extends Controller
     public function show(Book $book, $id)
     {
         $book = Book::findOrFail($id);
-        return view('tampilan.detail', compact('book'));
+        $genre = $book->genre;  // Mengambil genre terkait dengan buku
+        $penulis = $book->penulis;  // Mengambil penulis terkait dengan buku
+
+        return view('tampilan.detail', compact('book','genre','penulis'));
     }
 
     public function edit(Book $book)
     {
+        $books = Book::with(['genre', 'penulis'])->get();
         $genres = Genre::all();
-        return view('book.edit', compact('book', 'genres'));
+        $penulis = Penulis::all();
+        return view('book.edit', compact('book', 'genres', 'penulis'));
     }
 
     public function update(UpdateBookRequest $request, Book $book)
     {
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
+            'penulis_id' => 'required|exists:penulis,id',
             'cover_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsi' => 'required|string|max:255',
             'genre_id' => 'required|exists:genres,id',

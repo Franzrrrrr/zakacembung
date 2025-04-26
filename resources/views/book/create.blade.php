@@ -31,10 +31,14 @@
             <label for="judul" class="block text-sm font-medium">Judul</label>
             <input type="text" name="judul" id="judul" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
           </div>
+          <div class="mb-4">
+            <label for="penulis_name" class="block text-sm font-medium">Penulis</label>
+            <input type="text" name="penulis_name" id="penulis_name" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
+        </div>
 
           <div class="mb-4">
-            <label for="penulis" class="block text-sm font-medium">Penulis</label>
-            <input type="text" name="penulis" id="penulis" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
+            <label for="penulis_id" class="block text-sm font-medium">Penulis</label>
+            <input type="text" name="penulis_id" id="penulis_id" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
           </div>
           
           <div class="mb-4">
@@ -47,7 +51,10 @@
             <input type="file" name="cover_path" id="cover_path" class="w-full" required>
           </div>
 
-          
+          <div class="mb-4">
+            <label for="total_pages" class="block text-sm font-medium">Total Halaman</label>
+            <input type="number" name="total_pages" id="total_pages" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
+          </div>
 
           <div class="mb-4">
             <label for="genre_id" class="block text-sm font-medium">Genre</label>
@@ -58,15 +65,6 @@
             </select>
           </div>
 
-          <!-- Tambahan Input Status -->
-          <div class="mb-4">
-            <label for="status" class="block text-sm font-medium">Status</label>
-            <select name="status" id="status" class="w-full border border-gray-300 rounded px-3 py-2 text-black" required>
-              <option value="belum_dibaca">Belum Dibaca</option>
-              <option value="sedang_dibaca">Sedang Dibaca</option>
-              <option value="selesai_dibaca ">Selesai Dibaca</option>
-            </select>
-          </div>
 
           <div class="text-right">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>

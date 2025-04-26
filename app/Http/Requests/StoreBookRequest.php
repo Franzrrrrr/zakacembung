@@ -15,13 +15,14 @@ class StoreBookRequest extends FormRequest
     {
         return [
             'judul' => 'required|string|max:255|unique:books,judul',
-            'penulis' => 'required|string|max:255',
+            'penulis_id' => 'required|string|max:255',
             'total_pages' => 'required|integer|min:100',
             'last_read_page' => 'nullable|integer|min:0',
             'cover_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsi' => 'required|string',
             'genre_id' => 'required|exists:genres,id',
-            'status' => 'required|in:belum_dibaca,sedang_dibaca,selesai_dibaca',
+            'total_pages'  => 'required|integer|min:1',
+            'status' => 'belum_dibaca',
         ];
     }
 }
