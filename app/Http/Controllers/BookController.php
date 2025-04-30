@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Goal;
 use Illuminate\Http\Request;
 use App\Models\{Book, Genre, Penulis};
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\{StoreBookRequest, UpdateBookRequest};
 
 class BookController extends Controller
@@ -41,15 +42,12 @@ class BookController extends Controller
             }
         }
 
-            $books = $query->get(); 
-            // Use the query to fetch the filtered books
-  // Mengambil penulis terkait dengan buku
-
-
-        $totalTarget = 12;
+        $books = $query->get(); 
+        $goal = Goal::where('user_id', Auth::id())->latest()->first();
+        $totalTarget = $goal ? $goal->target_books : 0; 
         $completedBooks = Book::where('status', 'selesai_dibaca')->count();
         $progress = ($totalTarget > 0) ? ($completedBooks / $totalTarget) * 100 : 0;
-        $behindSchedule = max(0, $totalTarget - $completedBooks);
+        $behindSchedule = max(0 , $totalTarget - $completedBooks);
 
         $arcPath = $this->generateArcPath($progress);
 

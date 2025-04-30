@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GoalController;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -29,7 +29,7 @@ Route::get('/tampil/{book}/edit', [BookController::class, 'edit'])->name('book.e
 Route::put('/tampil/{book}/', [BookController::class, 'update'])->name('book.update');
 Route::delete('/tampil/{book}', [BookController::class, 'destroy'])->name('book.destroy');
 Route::get('/allbook', [BookController::class, 'search' , 'index'])->name('tampilan.all');
-Route::post('/goal/store', [GoalController::class, 'store'])->name('goal.store');
+Route::post('/goals', [GoalController::class, 'store'])->name('goal.store');
 Route::patch('tampil/{book}/progress', [BookController::class, 'updateProgress'])->name('books.updateProgress');
 // Route untuk menyelesaikan buku
 // Di file routes/web.php

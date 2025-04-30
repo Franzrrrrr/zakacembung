@@ -119,21 +119,7 @@
     class="bg-yellow-700 hover:bg-yellow-800 text-white font-semibold mt-2 py-2 px-4 rounded">
     Set a New Goal
     </button>
-    @if($goals->isNotEmpty())
-            <div class="mb-6">
-                <h2 class="text-xl font-bold mb-2">🎯 Goals Bacaan:</h2>
-                @foreach($goals as $goal)
-                    <div class="mb-4 border p-4 rounded">
-                        <p class="font-semibold">🎯 Target: {{ $goal->target_books }} buku sampai {{ $goal->deadline->format('d M Y') }}</p>
-                        <ul class="list-disc list-inside text-gray-700">
-                            @foreach($goal->books as $book)
-                                <li>{{ $book->judul }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+
 
 
             {{-- </div> --}}
@@ -178,20 +164,12 @@
                             <!-- Input for Target Books -->
                             <div>
                                 <label for="target_books" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jumlah Buku</label>
-                                <input type="number" name="target_books" id="target_books" min="1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                                <input type="number" name="target_books" id="target_books" min="1" value="{{ old('target_books') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                                 @error('target_books')
                                     <p class="text-red-500 text-xs">{{ $message }}</p>
                                 @enderror
                             </div>
                         
-                            <!-- Input for Deadline -->
-                            <div>
-                                <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tanggal Target</label>
-                                <input type="date" name="deadline" id="deadline" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
-                                @error('deadline')
-                                    <p class="text-red-500 text-xs">{{ $message }}</p>
-                                @enderror
-                            </div>
                         
                             
                         
