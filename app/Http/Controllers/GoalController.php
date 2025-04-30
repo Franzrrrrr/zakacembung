@@ -31,7 +31,7 @@ public function store(Request $request)
     ]);
 
     $goal = new Goal();
-    $goal->user_id = Auth::id(); // <–– WAJIB ISI INI!
+    $goal->user_id = Auth::id(); 
     $goal->target_books = $request->target_books;
     $goal->save();
 

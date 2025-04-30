@@ -24,15 +24,14 @@ Route::get('/', function (){
 Route::get('/tampil', [BookController::class, 'index'])->name('book.index');
 Route::get('/tampil/create', [BookController::class, 'create'])->name('book.create');
 Route::post('/tampil', [BookController::class, 'store'])->name('book.store');
-Route::get('/tampil/{id}/detail', [BookController::class, 'show'])->name('book.show');
+Route::get('/tampil/{id}/detail', [BookController::class, 'show'])->name('book.show')->middleware('auth');;
 Route::get('/tampil/{book}/edit', [BookController::class, 'edit'])->name('book.edit');
 Route::put('/tampil/{book}/', [BookController::class, 'update'])->name('book.update');
 Route::delete('/tampil/{book}', [BookController::class, 'destroy'])->name('book.destroy');
 Route::get('/allbook', [BookController::class, 'search' , 'index'])->name('tampilan.all');
 Route::post('/goals', [GoalController::class, 'store'])->name('goal.store');
 Route::patch('tampil/{book}/progress', [BookController::class, 'updateProgress'])->name('books.updateProgress');
-// Route untuk menyelesaikan buku
-// Di file routes/web.php
+Route::post('/books/{book}/komen', [\App\Http\Controllers\KomenController::class, 'store'])->name('komen.store');
 Route::patch('/book/{book}/complete', [BookController::class, 'complete'])->name('book.complete');
 
 

@@ -31,4 +31,10 @@ class Book extends Model
     public function penulis(): BelongsTo {
         return $this->belongsTo(Penulis::class, 'penulis_id');
     }
+
+    public function komens()
+    {
+        return $this->hasMany(Komen::class);
+    }
+
 }

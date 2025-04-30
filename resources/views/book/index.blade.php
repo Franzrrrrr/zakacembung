@@ -8,7 +8,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <x-font></x-font>
-    <x-home.nav></x-nav>
+    <x-home.nava />
     <body class="h h-screen font-outfit">
         <section class="p-10">
             

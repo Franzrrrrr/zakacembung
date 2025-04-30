@@ -15,7 +15,7 @@ class Komen extends Model
     ];
 
 
-    public function buku(): BelongsTo{
+    public function book(): BelongsTo{
         return $this->belongsTo(Book::class);
     }
 

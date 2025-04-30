@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Book as ModelsBook;
+use Illuminate\Support\Facades\Auth;
 use App\Models\{Penulis, Book, Komen};
 use App\Http\Requests\StoreKomenRequest;
-use App\Models\Book as ModelsBook;
 
 class KomenController extends Controller
 {   
@@ -31,19 +32,25 @@ class KomenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKomenRequest $request, $id)
+    public function store(Request $request, Book $book)
 {
-    $validated = $request->validated();
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Kamu harus login untuk memberikan komentar.');
+    }
 
-    Komen::create([
-        'book_id' => $id,
-        'user_id' => auth()->id(),
-        'penulis_id' => Book::findOrFail($id)->penulis_id, // ini ditambahkan
-        'komenan' => $validated['komenan'],
+    $request->validate([
+        'komenan' => 'required',
     ]);
 
-    return redirect()->route('komen.show', $id)->with('success', 'Komentar berhasil ditambahkan');
+    $book->komens()->create([
+        'komenan' => $request->komenan,
+        'user_id' => Auth::id(), 
+        'penulis_id' => $book->penulis_id, 
+    ]); 
+
+    return back()->with('success', 'Komentar berhasil ditambahkan.');
 }
+
 
 
     /**
@@ -53,7 +60,7 @@ class KomenController extends Controller
 {
     $book = Book::with(['komens.user', 'komens.penulis'])->findOrFail($id);
     return view('tampilan.detail', compact('book'));
-}
+}   
 
 
     /**
